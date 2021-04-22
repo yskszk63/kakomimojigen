@@ -1,0 +1,27 @@
+<style> h2 { min-height: 2em; } </style>
+<select id="sub">
+    <option value="&#x20dd;">あ&#x20dd;</option>
+    <option value="&#x20de;">あ&#x20de;</option>
+</select>
+<input id="input-here" type="text" value="今日は！"/>
+<output></output>
+<script>
+    const REGEX_JAPANESE = /[\u3000-\u303f]|[\u3040-\u309f]|[\u30a0-\u30ff]|[\uff00-\uff9f]|[\u4e00-\u9faf]|[\u3400-\u4dbf]/;
+    const hasJapanese = (str) => REGEX_JAPANESE.test(str);
+
+    document.querySelector("img").src = document.querySelector("img").src.replace(/\.jpg$/, '.svg');
+    const $inputHere = document.querySelector('#input-here');
+    const $sub = document.querySelector('#sub');
+    const $output = document.querySelector('h2');
+    $inputHere.addEventListener('input', gen);
+    $sub.addEventListener('change', gen);
+    gen();
+
+    function gen() {
+        const val = $inputHere.value;
+        const sub = $sub.value;
+        function f(c) { if (hasJapanese(c)) { return `${c}${sub}` } else { return c } }
+        const gen = Array.prototype.map.call(val, f).join("");
+        $output.textContent = gen;
+    }
+</script>
